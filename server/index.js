@@ -14,10 +14,16 @@ app.use(cors({
 
 // 添加响应头中间件
 app.use((req, res, next) => {
+  // 安全相关响应头
   res.setHeader('X-Content-Type-Options', 'nosniff')
   res.setHeader('X-Frame-Options', 'DENY')
   res.setHeader('X-XSS-Protection', '1; mode=block')
-  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload')
+
+  // HTTP/2 和 HTTP/3 相关响应头
+  res.setHeader('Alt-Svc', 'h3=":443"; ma=86400, h3-29=":443"; ma=86400')
+  res.setHeader('Upgrade-Insecure-Requests', '1')
+
   next()
 })
 

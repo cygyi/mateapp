@@ -14,14 +14,16 @@
       "src": "/api/(.*)",
       "dest": "/index.js",
       "headers": {
-        "cache-control": "public, max-age=0, must-revalidate"
+        "cache-control": "public, max-age=0, must-revalidate",
+        "alt-svc": "h3=\":443\"; ma=86400, h3-29=\":443\"; ma=86400"
       }
     },
     {
       "src": "/(.*)",
       "dest": "/index.js",
       "headers": {
-        "cache-control": "public, max-age=0, must-revalidate"
+        "cache-control": "public, max-age=0, must-revalidate",
+        "alt-svc": "h3=\":443\"; ma=86400, h3-29=\":443\"; ma=86400"
       }
     }
   ],
@@ -30,16 +32,5 @@
   },
   "github": {
     "silent": true
-  },
-  "cdn": {
-    "provider": "cloudflare",
-    "cache": {
-      "static": {
-        "maxAge": 31536000
-      },
-      "dynamic": {
-        "maxAge": 0
-      }
-    }
   }
 }
