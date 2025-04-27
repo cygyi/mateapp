@@ -138,10 +138,12 @@ app.use((err, req, res, next) => {
   })
 })
 
-// 启动服务器
-app.listen(port, () => {
-  console.log(`服务器运行在 http://localhost:${port}`)
-})
+// 在本地开发时启动服务器
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+    console.log(`服务器运行在 http://localhost:${port}`)
+  })
+}
 
 // 导出 app 供 Vercel 使用
 module.exports = app 
