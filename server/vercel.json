@@ -12,11 +12,17 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/index.js"
+      "dest": "/index.js",
+      "headers": {
+        "cache-control": "public, max-age=0, must-revalidate"
+      }
     },
     {
       "src": "/(.*)",
-      "dest": "/index.js"
+      "dest": "/index.js",
+      "headers": {
+        "cache-control": "public, max-age=0, must-revalidate"
+      }
     }
   ],
   "env": {
@@ -24,5 +30,16 @@
   },
   "github": {
     "silent": true
+  },
+  "cdn": {
+    "provider": "cloudflare",
+    "cache": {
+      "static": {
+        "maxAge": 31536000
+      },
+      "dynamic": {
+        "maxAge": 0
+      }
+    }
   }
 }
