@@ -176,6 +176,7 @@ const currentPage = ref(1)
 const pageSize = 10
 const isAtTop = ref(true)
 const hasNoMore = ref(false)
+const isFirstLoad = ref(true)
 const isOneRender = ref(true)
 let scrollTimer = null
 
@@ -234,7 +235,7 @@ const handleImageLoad = (event) => {
 
 // 监听滚动到底部
 watch(arrivedState, (state) => {
-  if (state.bottom && !isLoading.value && !hasNoMore.value) {
+  if (state.bottom && !isLoading.value && !hasNoMore.value && !isFirstLoad.value) {
     loadMore()
   }
 })
@@ -243,17 +244,15 @@ watch(arrivedState, (state) => {
 const loadMore = async () => {
   if (isLoading.value || hasNoMore.value) return
   
+  isLoading.value = true
   currentPage.value++
   await loadData(currentPage.value)
+  isLoading.value = false
 }
 
 // 加载数据
 const loadData = async (page, isRefresh = false) => {
   try {
-    if (page !== 1) {
-      isLoading.value = true
-    }
-    
     const response = await getList({ 
       page, 
       pageSize, 
@@ -294,12 +293,15 @@ const loadData = async (page, isRefresh = false) => {
       imageLoadedStates.value[item.id] = false
     })
     
+    // 首次加载完成后设置标志
+    if (isFirstLoad.value) {
+      isFirstLoad.value = false
+    }
+    
     return response
   } catch (error) {
     console.error('加载数据失败:', error)
     return null
-  } finally {
-    isLoading.value = false
   }
 }
 
@@ -417,7 +419,7 @@ onMounted(async () => {
     containerRef.value.addEventListener('scroll', handleScroll)
   }
   
-  // 只保留一次初始加载
+  // 首次加载数据
   await loadData(1)
 })
 
