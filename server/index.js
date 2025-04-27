@@ -52,7 +52,7 @@ app.post('/api/list', (req, res) => {
     let list = []
     if (state === 'video') {
       // 视频和图片混合
-      list = Array.from({ length: 20 }, (_, i) => {
+      list = Array.from({ length: 40 }, (_, i) => {
         const baseData = generateBaseData(i + 1)
         const isVideo = Math.random() > 0.5
         const item = {
@@ -67,7 +67,7 @@ app.post('/api/list', (req, res) => {
       })
     } else if (state === 'image') {
       // 只返回图片
-      list = Array.from({ length: 20 }, (_, i) => {
+      list = Array.from({ length: 60 }, (_, i) => {
         const baseData = generateBaseData(i + 1)
         const item = {
           ...baseData,
@@ -79,7 +79,7 @@ app.post('/api/list', (req, res) => {
       })
     } else {
       // 默认只返回图片
-      list = Array.from({ length: 20 }, (_, i) => {
+      list = Array.from({ length: 60 }, (_, i) => {
         const baseData = generateBaseData(i + 1)
         const item = {
           ...baseData,

@@ -234,21 +234,15 @@ const handleImageLoad = (event) => {
 
 // 监听滚动到底部
 watch(arrivedState, (state) => {
-  // 只在非加载状态且未到达底部时触发
   if (state.bottom && !isLoading.value && !hasNoMore.value) {
-    console.log('触底，加载更多数据...')
     loadMore()
   }
 })
 
 // 加载更多
 const loadMore = async () => {
-  if (isLoading.value || hasNoMore.value) {
-    console.log('正在加载中或没有更多数据，跳过加载')
-    return
-  }
+  if (isLoading.value || hasNoMore.value) return
   
-  console.log('开始加载更多数据，当前页码:', currentPage.value + 1)
   currentPage.value++
   await loadData(currentPage.value)
 }
@@ -256,7 +250,6 @@ const loadMore = async () => {
 // 加载数据
 const loadData = async (page, isRefresh = false) => {
   try {
-    console.log('开始加载数据，页码:', page)
     if (page !== 1) {
       isLoading.value = true
     }
@@ -266,7 +259,6 @@ const loadData = async (page, isRefresh = false) => {
       pageSize, 
       state: urlQueryState 
     })
-    console.log('获取到数据:', response)
     
     // 检查响应数据结构
     if (!response || !response.list) {
@@ -275,12 +267,10 @@ const loadData = async (page, isRefresh = false) => {
     }
     
     const newItems = response.list
-    console.log('处理后的数据:', newItems)
     
     // 检查是否没有更多数据
     if (newItems.length === 0) {
       hasNoMore.value = true
-      console.log('没有更多数据了')
       return null
     }
     
