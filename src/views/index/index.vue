@@ -253,6 +253,7 @@ const loadMore = async () => {
 // 加载数据
 const loadData = async (page, isRefresh = false) => {
   try {
+    isLoading.value = true
     const response = await getList({ 
       page, 
       pageSize, 
@@ -302,6 +303,8 @@ const loadData = async (page, isRefresh = false) => {
   } catch (error) {
     console.error('加载数据失败:', error)
     return null
+  } finally {
+    isLoading.value = false
   }
 }
 
