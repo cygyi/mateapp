@@ -3,7 +3,7 @@ import axios from 'axios'
 
 // 创建 axios 实例
 const service = axios.create({
-  baseURL: '',
+  baseURL: 'https://metaapp-git-master-cygyis-projects.vercel.app/',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'
