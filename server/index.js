@@ -3,10 +3,15 @@ const cors = require('cors')
 const Mock = require('mockjs')
 
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 
-// 启用 CORS
-app.use(cors())
+// 配置 CORS
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}))
+
 app.use(express.json())
 
 // 添加请求日志中间件
@@ -15,6 +20,10 @@ app.use((req, res, next) => {
   next()
 })
 
+// 健康检查接口
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' })
+})
 
 // 可访问的视频链接列表
 const videoUrls = [
@@ -111,6 +120,14 @@ app.post('/api/list', (req, res) => {
   }
 })
 
+// 404 处理
+app.use((req, res) => {
+  res.status(404).json({
+    code: 404,
+    message: '接口不存在'
+  })
+})
+
 // 错误处理中间件
 app.use((err, req, res, next) => {
   console.error('全局错误:', err)
@@ -124,4 +141,7 @@ app.use((err, req, res, next) => {
 // 启动服务器
 app.listen(port, () => {
   console.log(`服务器运行在 http://localhost:${port}`)
-}) 
+})
+
+// 导出 app 供 Vercel 使用
+module.exports = app 
